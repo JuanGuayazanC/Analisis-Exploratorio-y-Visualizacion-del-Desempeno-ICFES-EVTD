@@ -13,65 +13,590 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r importDataset}
 library(readr)
 icfes_20201 <- read_csv("icfes_20201.csv")
+library(ggplot2)
 ```
 
 
 ```{r , echo=TRUE}
-variables <- c(
-  "ESTU_NACIONALIDAD", "ESTU_GENERO", "FAMI_ESTRATOVIVIENDA", "FAMI_EDUCACIONPADRE", "FAMI_EDUCACIONMADRE", "FAMI_TIENEINTERNET", "FAMI_TIENECOMPUTADOR", "FAMI_NUMLIBROS", "FAMI_COMELECHEDERIVADOS", "FAMI_COMECARNEPESCADOHUEVO", "FAMI_COMECEREALFRUTOSLEGUMBRE", "ESTU_DEDICACIONLECTURADIARIA", "ESTU_HORASSEMANATRABAJA", "COLE_BILINGUE", "COLE_AREA_UBICACION", "COLE_JORNADA", "PUNT_LECTURA_CRITICA", "PUNT_LECTURA_CRITICA", "PUNT_C_NATURALES", "PUNT_SOCIALES_CIUDADANAS", "PUNT_INGLES", "PUNT_GLOBAL", "ESTU_LIMITA_MOTRIZ"
+# Crear tabla de frecuencias
+freq_nacionalidad <- as.data.frame(table(icfes_20201$ESTU_NACIONALIDAD))
+colnames(freq_nacionalidad) <- c("Nacionalidad", "Frecuencia")
+
+# Gráfico con ggplot2
+ggplot(freq_nacionalidad, aes(x = Nacionalidad, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Frecuencia de Estudiantes por Nacionalidad",
+       x = "Nacionalidad",
+       y = "Frecuencia") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato" para que aparezca en la gráfica
+icfes_20201$ESTU_GENERO2 <- ifelse(is.na(icfes_20201$ESTU_GENERO), 
+                                   "Sin dato", 
+                                   icfes_20201$ESTU_GENERO)
+
+# Crear tabla de frecuencia
+freq_genero <- as.data.frame(table(icfes_20201$ESTU_GENERO2))
+colnames(freq_genero) <- c("Genero", "Frecuencia")
+
+# Gráfico
+ggplot(freq_genero, aes(x = Genero, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "orchid") +
+  theme_minimal() +
+  labs(title = "Frecuencia por Género",
+       x = "Género",
+       y = "Frecuencia") +
+  theme(axis.text.x = element_text(angle = 0))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato" para que aparezca en la gráfica
+icfes_20201$ESTRATO2 <- ifelse(is.na(icfes_20201$FAMI_ESTRATOVIVIENDA),
+                               "Sin dato",
+                               icfes_20201$FAMI_ESTRATOVIVIENDA)
+
+# Crear tabla de frecuencias
+freq_estrato <- as.data.frame(table(icfes_20201$ESTRATO2))
+colnames(freq_estrato) <- c("Estrato", "Frecuencia")
+
+# Ordenar los estratos de forma lógica (1 a 6, Sin estrato, Sin dato)
+orden_estratos <- c("Estrato 1", "Estrato 2", "Estrato 3", "Estrato 4",
+                    "Estrato 5", "Estrato 6", "Sin Estrato", "Sin dato")
+
+freq_estrato$Estrato <- factor(freq_estrato$Estrato, levels = orden_estratos)
+
+# Gráfico
+ggplot(freq_estrato, aes(x = Estrato, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Frecuencia por Estrato de Vivienda",
+       x = "Estrato",
+       y = "Frecuencia") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato"
+icfes_20201$EDUPADRE2 <- ifelse(is.na(icfes_20201$FAMI_EDUCACIONPADRE),
+                                "Sin dato",
+                                icfes_20201$FAMI_EDUCACIONPADRE)
+
+# Crear tabla de frecuencias
+freq_edupadre <- as.data.frame(table(icfes_20201$EDUPADRE2))
+colnames(freq_edupadre) <- c("Educacion", "Frecuencia")
+
+# Orden lógico de los niveles educativos
+orden_edu <- c("Ninguno",
+               "Primaria incompleta",
+               "Primaria completa",
+               "Secundaria (Bachillerato) incompleta",
+               "Secundaria (Bachillerato) completa",
+               "Técnica o tecnológica incompleta",
+               "Técnica o tecnológica completa",
+               "Educación profesional incompleta",
+               "Educación profesional completa",
+               "Postgrado",
+               "No sabe",
+               "No Aplica",
+               "Sin dato")
+
+freq_edupadre$Educacion <- factor(freq_edupadre$Educacion, levels = orden_edu)
+
+# Gráfico
+ggplot(freq_edupadre, aes(x = Educacion, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "darkseagreen3") +
+  theme_minimal() +
+  labs(title = "Frecuencia del Nivel Educativo del Padre",
+       x = "Nivel educativo del padre",
+       y = "Frecuencia") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato"
+icfes_20201$EDUMADRE2 <- ifelse(
+  is.na(icfes_20201$FAMI_EDUCACIONMADRE),
+  "Sin dato",
+  icfes_20201$FAMI_EDUCACIONMADRE
 )
 
+# Crear tabla de frecuencias
+freq_edumadre <- as.data.frame(table(icfes_20201$EDUMADRE2))
+colnames(freq_edumadre) <- c("Educacion", "Frecuencia")
+
+# Orden lógico según tus datos reales
+orden_edu <- c(
+  "Ninguno",
+  "Primaria incompleta",
+  "Primaria completa",
+  "Secundaria (Bachillerato) incompleta",
+  "Secundaria (Bachillerato) completa",
+  "Técnica o tecnológica incompleta",
+  "Técnica o tecnológica completa",
+  "Educación profesional incompleta",
+  "Educación profesional completa",
+  "Postgrado",
+  "No sabe",
+  "No Aplica",
+  "Sin dato"
+)
+
+freq_edumadre$Educacion <- factor(freq_edumadre$Educacion, levels = orden_edu)
+
+# Gráfico
+ggplot(freq_edumadre, aes(x = Educacion, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "mediumpurple") +
+  theme_minimal() +
+  labs(
+    title = "Frecuencia del Nivel Educativo de la Madre",
+    x = "Nivel educativo de la madre",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
 ```{r , echo=TRUE}
-for (var in variables) {
-  
-  cat("### Variable:", var, "\n\n")
-  
-  # Verificar si existe
-  if (!var %in% names(icfes_20201)) {
-    cat("La variable no existe en el dataset.\n\n")
-    next
-  }
-  
-  # Tabla de frecuencias
-  tabla <- table(icfes_20201[[var]], useNA = "ifany")
-  
-  if (length(tabla) == 0) {
-    cat("No hay datos para esta variable.\n\n")
-    next
-  }
-  
-  tabla_df <- as.data.frame(tabla)
-  names(tabla_df) <- c("Categoria", "Frecuencia")
-  
-  print(tabla_df)
-  
-  # Solo graficar si tiene <=10 categorías
-  if (nrow(tabla_df) <= 10) {
-    
-    # Crear gráfico
-    bp <- barplot(
-      tabla_df$Frecuencia,
-      names.arg = tabla_df$Categoria,
-      main = var,
-      col = "steelblue",
-      las = 2,
-      cex.names = 0.8
-    )
-    
-    # AGREGAR VALORES ENCIMA DE CADA BARRA
-    text(
-      x = bp,
-      y = tabla_df$Frecuencia,
-      labels = tabla_df$Frecuencia,
-      pos = 3,           # arriba de la barra
-      cex = 0.9
-    )
-    
-  } else {
-    cat("Demasiadas categorías para graficar.\n")
-  }
-}
+# Reemplazar NA por "Sin dato"
+icfes_20201$INTERNET2 <- ifelse(
+  is.na(icfes_20201$FAMI_TIENEINTERNET),
+  "Sin dato",
+  icfes_20201$FAMI_TIENEINTERNET
+)
+
+# Crear tabla de frecuencias
+freq_internet <- as.data.frame(table(icfes_20201$INTERNET2))
+colnames(freq_internet) <- c("TieneInternet", "Frecuencia")
+
+# Orden lógico de categorías
+orden_internet <- c("Si", "No", "Sin dato")
+
+freq_internet$TieneInternet <- factor(freq_internet$TieneInternet,
+                                      levels = orden_internet)
+
+# Gráfico
+ggplot(freq_internet, aes(x = TieneInternet, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(
+    title = "Acceso a Internet en el Hogar",
+    x = "¿Tiene internet en el hogar?",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato"
+icfes_20201$COMPUTADOR2 <- ifelse(
+  is.na(icfes_20201$FAMI_TIENECOMPUTADOR),
+  "Sin dato",
+  icfes_20201$FAMI_TIENECOMPUTADOR
+)
+
+# Crear tabla de frecuencias
+freq_computador <- as.data.frame(table(icfes_20201$COMPUTADOR2))
+colnames(freq_computador) <- c("TieneComputador", "Frecuencia")
+
+# Orden lógico de categorías
+orden_computador <- c("Si", "No", "Sin dato")
+
+freq_computador$TieneComputador <- factor(
+  freq_computador$TieneComputador,
+  levels = orden_computador
+)
+
+# Gráfico
+ggplot(freq_computador, aes(x = TieneComputador, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "darkorange") +
+  theme_minimal() +
+  labs(
+    title = "Acceso a Computador en el Hogar",
+    x = "¿Tiene computador en el hogar?",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato"
+icfes_20201$LIBROS2 <- ifelse(
+  is.na(icfes_20201$FAMI_NUMLIBROS),
+  "Sin dato",
+  icfes_20201$FAMI_NUMLIBROS
+)
+
+# Crear tabla de frecuencias
+freq_libros <- as.data.frame(table(icfes_20201$LIBROS2))
+colnames(freq_libros) <- c("NumLibros", "Frecuencia")
+
+# Orden lógico de categorías
+orden_libros <- c(
+  "0 A 10 LIBROS",
+  "11 A 25 LIBROS",
+  "26 A 100 LIBROS",
+  "MÁS DE 100 LIBROS",
+  "Sin dato"
+)
+
+freq_libros$NumLibros <- factor(
+  freq_libros$NumLibros,
+  levels = orden_libros
+)
+
+# Gráfico
+ggplot(freq_libros, aes(x = NumLibros, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(
+    title = "Número de Libros en el Hogar",
+    x = "Categoría de cantidad de libros",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato"
+icfes_20201$DERIVADOS2 <- ifelse(
+  is.na(icfes_20201$FAMI_COMELECHEDERIVADOS),
+  "Sin dato",
+  icfes_20201$FAMI_COMELECHEDERIVADOS
+)
+
+# Crear tabla de frecuencias
+freq_derivados <- as.data.frame(table(icfes_20201$DERIVADOS2))
+colnames(freq_derivados) <- c("Consumo", "Frecuencia")
+
+# Orden lógico de categorías
+orden_derivados <- c(
+  "Nunca o rara vez comemos eso",
+  "1 o 2 veces por semana",
+  "3 a 5 veces por semana",
+  "Todos o casi todos los días",
+  "Sin dato"
+)
+
+freq_derivados$Consumo <- factor(
+  freq_derivados$Consumo,
+  levels = orden_derivados
+)
+
+# Gráfico
+ggplot(freq_derivados, aes(x = Consumo, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "tomato") +
+  theme_minimal() +
+  labs(
+    title = "Frecuencia de Consumo de Leche y Derivados",
+    x = "Frecuencia de consumo",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato"
+icfes_20201$CARNE2 <- ifelse(
+  is.na(icfes_20201$FAMI_COMECARNEPESCADOHUEVO),
+  "Sin dato",
+  icfes_20201$FAMI_COMECARNEPESCADOHUEVO
+)
+
+# Crear tabla de frecuencias
+freq_carne <- as.data.frame(table(icfes_20201$CARNE2))
+colnames(freq_carne) <- c("Consumo", "Frecuencia")
+
+# Orden lógico de categorías
+orden_carne <- c(
+  "Nunca o rara vez comemos eso",
+  "1 o 2 veces por semana",
+  "3 a 5 veces por semana",
+  "Todos o casi todos los días",
+  "Sin dato"
+)
+
+freq_carne$Consumo <- factor(
+  freq_carne$Consumo,
+  levels = orden_carne
+)
+
+# Gráfico
+ggplot(freq_carne, aes(x = Consumo, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(
+    title = "Frecuencia de Consumo de Carne, Pescado o Huevo",
+    x = "Frecuencia de consumo",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato"
+icfes_20201$LECTURA2 <- ifelse(
+  is.na(icfes_20201$ESTU_DEDICACIONLECTURADIARIA),
+  "Sin dato",
+  icfes_20201$ESTU_DEDICACIONLECTURADIARIA
+)
+
+# Crear tabla de frecuencias
+freq_lectura <- as.data.frame(table(icfes_20201$LECTURA2))
+colnames(freq_lectura) <- c("Lectura", "Frecuencia")
+
+# Orden lógico de categorías
+orden_lectura <- c(
+  "No leo por entretenimiento",
+  "30 minutos o menos",
+  "Entre 30 y 60 minutos",
+  "Entre 1 y 2 horas",
+  "Más de 2 horas",
+  "Sin dato"
+)
+
+freq_lectura$Lectura <- factor(
+  freq_lectura$Lectura,
+  levels = orden_lectura
+)
+
+# Gráfico
+ggplot(freq_lectura, aes(x = Lectura, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "seagreen") +
+  theme_minimal() +
+  labs(
+    title = "Dedicación Diaria a la Lectura por Entretenimiento",
+    x = "Tiempo diario de lectura",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato"
+icfes_20201$TRABAJO2 <- ifelse(
+  is.na(icfes_20201$ESTU_HORASSEMANATRABAJA),
+  "Sin dato",
+  icfes_20201$ESTU_HORASSEMANATRABAJA
+)
+
+# Crear tabla de frecuencias
+freq_trabajo <- as.data.frame(table(icfes_20201$TRABAJO2))
+colnames(freq_trabajo) <- c("Horas", "Frecuencia")
+
+# Orden lógico de categorías
+orden_trabajo <- c(
+  "0",
+  "Menos de 10 horas",
+  "Entre 11 y 20 horas",
+  "Entre 21 y 30 horas",
+  "Más de 30 horas",
+  "Sin dato"
+)
+
+freq_trabajo$Horas <- factor(
+  freq_trabajo$Horas,
+  levels = orden_trabajo
+)
+
+# Gráfico
+ggplot(freq_trabajo, aes(x = Horas, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "dodgerblue3") +
+  theme_minimal() +
+  labs(
+    title = "Horas Semanales de Trabajo del Estudiante",
+    x = "Horas trabajadas por semana",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Reemplazar NA por "Sin dato"
+icfes_20201$BILINGUE2 <- ifelse(
+  is.na(icfes_20201$COLE_BILINGUE),
+  "Sin dato",
+  icfes_20201$COLE_BILINGUE
+)
+
+# Crear tabla de frecuencias
+freq_bilingue <- as.data.frame(table(icfes_20201$BILINGUE2))
+colnames(freq_bilingue) <- c("Bilingue", "Frecuencia")
+
+# Orden lógico
+orden_bilingue <- c("S", "N", "Sin dato")
+
+freq_bilingue$Bilingue <- factor(
+  freq_bilingue$Bilingue,
+  levels = orden_bilingue
+)
+
+# Gráfico
+ggplot(freq_bilingue, aes(x = Bilingue, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "orchid") +
+  theme_minimal() +
+  labs(
+    title = "¿El Colegio es Bilingüe?",
+    x = "Respuesta",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
+```
+
+```{r , echo=TRUE}
+# Crear tabla de frecuencias
+freq_area <- as.data.frame(table(icfes_20201$COLE_AREA_UBICACION))
+colnames(freq_area) <- c("Area", "Frecuencia")
+
+# Orden lógico
+orden_area <- c("URBANO", "RURAL")
+
+freq_area$Area <- factor(
+  freq_area$Area,
+  levels = orden_area
+)
+
+# Gráfico
+ggplot(freq_area, aes(x = Area, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "darkcyan") +
+  theme_minimal() +
+  labs(
+    title = "Área de Ubicación del Colegio",
+    x = "Área",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5))
+```
+
+```{r , echo=TRUE}
+# Crear tabla de frecuencias
+freq_jornada <- as.data.frame(table(icfes_20201$COLE_JORNADA))
+colnames(freq_jornada) <- c("Jornada", "Frecuencia")
+
+# Orden lógico de jornadas
+orden_jornada <- c(
+  "MAÑANA",
+  "TARDE",
+  "NOCHE",
+  "UNICA",
+  "COMPLETA",
+  "SABATINA"
+)
+
+freq_jornada$Jornada <- factor(
+  freq_jornada$Jornada,
+  levels = orden_jornada
+)
+
+# Gráfico
+ggplot(freq_jornada, aes(x = Jornada, y = Frecuencia)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  theme_minimal() +
+  labs(
+    title = "Jornada del Colegio",
+    x = "Jornada",
+    y = "Frecuencia"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r , echo=TRUE}
+# Crear dataframe con la variable
+lectura <- data.frame(Puntaje = icfes_20201$PUNT_LECTURA_CRITICA)
+
+# Gráfico: Histograma con curva de densidad
+ggplot(lectura, aes(x = Puntaje)) +
+  geom_histogram(binwidth = 5, fill = "goldenrod", color = "black", alpha = 0.7) +
+  geom_density(size = 1.2, alpha = 0.4) +
+  theme_minimal() +
+  labs(
+    title = "Distribución del Puntaje de Lectura Crítica",
+    x = "Puntaje",
+    y = "Frecuencia"
+  )
+```
+
+```{r , echo=TRUE}
+# Crear dataframe con la variable
+lectura <- data.frame(Puntaje = icfes_20201$PUNT_MATEMATICAS)
+
+# Gráfico: Histograma con curva de densidad
+ggplot(lectura, aes(x = Puntaje)) +
+  geom_histogram(binwidth = 5, fill = "goldenrod", color = "black", alpha = 0.7) +
+  geom_density(size = 1.2, alpha = 0.4) +
+  theme_minimal() +
+  labs(
+    title = "Distribución del Puntaje de Lectura Crítica",
+    x = "Puntaje",
+    y = "Frecuencia"
+  )
 
 ```
+
+```{r , echo=TRUE}
+# Crear dataframe con la variable
+lectura <- data.frame(Puntaje = icfes_20201$PUNT_C_NATURALES)
+
+# Gráfico: Histograma con curva de densidad
+ggplot(lectura, aes(x = Puntaje)) +
+  geom_histogram(binwidth = 5, fill = "goldenrod", color = "black", alpha = 0.7) +
+  geom_density(size = 1.2, alpha = 0.4) +
+  theme_minimal() +
+  labs(
+    title = "Distribución del Puntaje de Lectura Crítica",
+    x = "Puntaje",
+    y = "Frecuencia"
+  )
+```
+
+```{r , echo=TRUE}
+# Crear dataframe con la variable
+lectura <- data.frame(Puntaje = icfes_20201$PUNT_SOCIALES_CIUDADANAS)
+
+# Gráfico: Histograma con curva de densidad
+ggplot(lectura, aes(x = Puntaje)) +
+  geom_histogram(binwidth = 5, fill = "goldenrod", color = "black", alpha = 0.7) +
+  geom_density(size = 1.2, alpha = 0.4) +
+  theme_minimal() +
+  labs(
+    title = "Distribución del Puntaje de Lectura Crítica",
+    x = "Puntaje",
+    y = "Frecuencia"
+  )
+```
+
+```{r , echo=TRUE}
+# Crear dataframe con la variable
+lectura <- data.frame(Puntaje = icfes_20201$PUNT_INGLES)
+
+# Gráfico: Histograma con curva de densidad
+ggplot(lectura, aes(x = Puntaje)) +
+  geom_histogram(binwidth = 5, fill = "goldenrod", color = "black", alpha = 0.7) +
+  geom_density(size = 1.2, alpha = 0.4) +
+  theme_minimal() +
+  labs(
+    title = "Distribución del Puntaje de Lectura Crítica",
+    x = "Puntaje",
+    y = "Frecuencia"
+  )
+```
+
+```{r , echo=TRUE}
+# Crear dataframe con la variable
+lectura <- data.frame(Puntaje = icfes_20201$PUNT_INGLES)
+
+# Gráfico: Histograma con curva de densidad
+ggplot(lectura, aes(x = Puntaje)) +
+  geom_histogram(binwidth = 5, fill = "goldenrod", color = "black", alpha = 0.7) +
+  geom_density(size = 1.2, alpha = 0.4) +
+  theme_minimal() +
+  labs(
+    title = "Distribución del Puntaje de Lectura Crítica",
+    x = "Puntaje",
+    y = "Frecuencia"
+  )
+```
+
+
+

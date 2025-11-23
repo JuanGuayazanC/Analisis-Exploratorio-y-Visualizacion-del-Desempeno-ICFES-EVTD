@@ -1,0 +1,117 @@
+---
+title: "Análisis univariado interes"
+author: "Sara Aponte, Juan Roa y Juan Guayazán"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r librerias}
+library(readr)
+library(ggplot2)
+library(dplyr)
+```
+
+
+```{r importDataset}
+icfes_20201 <- read_csv("icfes_20201.csv")
+icfes_20201 <- icfes_20201 %>%
+mutate(
+PUNT_GLOBAL_BIN = cut(PUNT_GLOBAL, breaks=seq(0,100,by=10), include.lowest=TRUE, right=FALSE),
+PUNT_LECTURA_BIN = cut(PUNT_LECTURA_CRITICA, breaks=seq(0,100,by=10), include.lowest=TRUE, right=FALSE),
+PUNT_MATEMATICAS_BIN = cut(PUNT_MATEMATICAS, breaks=seq(0,100,by=10), include.lowest=TRUE, right=FALSE),
+PUNT_INGLES_BIN = cut(PUNT_INGLES, breaks=seq(0,100,by=10), include.lowest=TRUE, right=FALSE)
+)
+```
+
+# Género vs Puntaje Global
+```{r , echo=TRUE}
+ggplot(icfes_20201, aes(x=PUNT_GLOBAL_BIN, fill=ESTU_GENERO)) +
+geom_bar(position="dodge", color="black", alpha=0.7) +
+theme_minimal() +
+labs(title="Distribución Puntaje Global por Género (intervalos de 10)", x="Puntaje Global", y="Frecuencia")
+```
+
+# Estrato vivienda vs Puntaje Global
+```{r , echo=TRUE}
+ggplot(icfes_20201, aes(x=PUNT_GLOBAL, fill=FAMI_ESTRATOVIVIENDA)) +
+  geom_density(alpha=0.4) +
+  theme_minimal() +
+  labs(title="Densidad Puntaje Global según Estrato", x="Puntaje Global", y="Densidad")
+```
+
+# Educación del padre vs Puntaje Global
+```{r , echo=TRUE}
+ggplot(icfes_20201, aes(x=PUNT_GLOBAL_BIN, fill=FAMI_EDUCACIONPADRE)) +
+geom_bar(position="stack", color="black", alpha=0.7) +
+theme_minimal() +
+labs(title="Distribución Puntaje Global según Educación del Padre (intervalos de 10)", x="Puntaje Global", y="Frecuencia")
+```
+
+# Educación de la madre vs Puntaje Global
+```{r , echo=TRUE}
+ggplot(icfes_20201, aes(x=PUNT_GLOBAL_BIN, fill=FAMI_EDUCACIONMADRE)) +
+geom_bar(position="stack", color="black", alpha=0.7) +
+theme_minimal() +
+labs(title="Distribución Puntaje Global según Educación de la Madre (intervalos de 10)", x="Puntaje Global", y="Frecuencia")
+```
+
+# Número de libros en casa vs Puntaje Lectura Crítica
+```{r , echo=TRUE}
+mean_libros <- icfes_20201 %>%
+group_by(FAMI_NUMLIBROS) %>%
+summarise(media_lectura = mean(PUNT_LECTURA_CRITICA, na.rm=TRUE))
+ggplot(mean_libros, aes(x=FAMI_NUMLIBROS, y=media_lectura, fill=FAMI_NUMLIBROS)) +
+geom_bar(stat="identity") +
+theme_minimal() +
+labs(title="Promedio Lectura Crítica según Número de Libros", x="Número de Libros", y="Puntaje Promedio") +
+theme(axis.text.x = element_text(angle=45, hjust=1))
+```
+
+# Acceso a internet vs Puntaje Global
+```{r , echo=TRUE}
+mean_internet <- icfes_20201 %>%
+group_by(FAMI_TIENEINTERNET) %>%
+summarise(media_global = mean(PUNT_GLOBAL, na.rm=TRUE))
+ggplot(mean_internet, aes(x=FAMI_TIENEINTERNET, y=media_global, fill=FAMI_TIENEINTERNET)) +
+geom_bar(stat="identity") +
+theme_minimal() +
+labs(title="Promedio Puntaje Global según Acceso a Internet", x="Tiene Internet", y="Puntaje Promedio")
+```
+
+# Área del colegio vs Puntaje Global
+```{r , echo=TRUE}
+ggplot(icfes_20201, aes(x=PUNT_GLOBAL, fill=COLE_AREA_UBICACION)) +
+  geom_density(alpha=0.4) +
+  theme_minimal() +
+  labs(title="Densidad Puntaje Global según Área del Colegio", x="Puntaje Global", y="Densidad")
+```
+
+# Colegio bilingüe vs Puntaje Inglés
+```{r , echo=TRUE}
+ggplot(icfes_20201, aes(x=PUNT_INGLES_BIN, fill=COLE_BILINGUE)) +
+geom_bar(position="dodge", color="black", alpha=0.7) +
+theme_minimal() +
+labs(title="Distribución Puntaje Inglés según Colegio Bilingüe (intervalos de 10)", x="Puntaje Inglés", y="Frecuencia")
+```
+
+# Dedicación diaria a lectura vs Puntaje Lectura Crítica
+```{r , echo=TRUE}
+ggplot(icfes_20201, aes(x=PUNT_LECTURA_BIN, fill=ESTU_DEDICACIONLECTURADIARIA)) +
+geom_bar(position="stack", color="black", alpha=0.7) +
+theme_minimal() +
+labs(title="Distribución Lectura Crítica según Dedicación a Lectura (intervalos de 10)", x="Puntaje Lectura Crítica", y="Frecuencia")
+```
+
+# Puntaje Matemáticas vs Puntaje Lectura Crítica
+```{r , echo=TRUE}
+ggplot(icfes_20201, aes(x=PUNT_MATEMATICAS_BIN, y=PUNT_LECTURA_BIN)) +
+geom_bin2d(bins=20) +
+scale_fill_viridis_c() +
+theme_minimal() +
+labs(title="Mapa de calor: Matemáticas vs Lectura Crítica (intervalos de 10)", x="Puntaje Matemáticas", y="Puntaje Lectura Crítica")
+```
+
