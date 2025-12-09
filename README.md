@@ -12,7 +12,11 @@ Proyecto que realiza el análisis exploratorio de datos (EDA) y visualización s
 - JUAN ESTEBAN ROA BENITO → [juan.roa-b@mail.escuelaing.edu.co](mailto:juan.roa-b@mail.escuelaing.edu.co)  
 - JUAN SEBASTIÁN GUAYAZÁN CLAVIJO → [@JuanGuayazanC](https://github.com/JuanGuayazanC) → [juan.guayazan-c@mail.escuelaing.edu.co](mailto:juan.guayazan-c@mail.escuelaing.edu.co)  
 
-Escuela Colombiana de Ingeniería Julio Garavito — Ingeniería de Sistemas e Ingeniería Estadística (2025)
+Aprendizaje estadístico 2 (MATE APE2-1 LEC (1682))      
+Coordinación Ingeniería Estadística     
+Ingeniería Estadística     
+Escuela Colombiana de Ingeniería Julio Garavito     
+2025-2 
 
 ---
 
@@ -166,10 +170,3 @@ Breve descripción de archivos clave:
 ## 📄 Licencia
 
 Actualmente no se encontró un archivo LICENSE en el repositorio. El contenido se distribuye con fines académicos y educativos según comunicado de los autores. Si desea usar o redistribuir el material, por favor contacte a los autores para acordar términos o añadir una licencia explícita al repositorio.
-
----
-
-Si quieres, puedo:
-- Generar un archivo LICENSE sugerido (e.g., CC BY-NC-SA o MIT) y proponerlo en una PR.
-- Añadir un script de instalación (install_packages.R) que instale todas las dependencias.
-- Crear un README en inglés o una versión resumida para presentación.
