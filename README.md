@@ -48,6 +48,8 @@ Escuela Colombiana de Ingeniería Julio Garavito
 
 ## ⚙️ Tecnologías
 
+![R](https://img.shields.io/badge/R-276DC3?style=flat-square&logo=r&logoColor=white) ![RStudio](https://img.shields.io/badge/RStudio-75AADB?style=flat-square&logo=rstudio&logoColor=white) ![Shiny](https://img.shields.io/badge/Shiny-0071C5?style=flat-square)
+
 - Lenguaje principal: R (RMarkdown para los reportes)
 - Entorno recomendado: RStudio / R >= 4.0
 - Paquetes (no exhaustivo): tidyverse (dplyr, ggplot2, readr), rmarkdown, knitr, dataMaid
