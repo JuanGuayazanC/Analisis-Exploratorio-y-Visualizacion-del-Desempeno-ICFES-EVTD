@@ -1,4 +1,4 @@
-# 📌 Análisis Exploratorio y Visualización del Desempeño ICFES (EVTD)
+# 📌 Análisis Exploratorio y Visualización del Desempeño ICFES
 
 > ⚠️ Estado: **EN DESARROLLO** — Versión académica
 
