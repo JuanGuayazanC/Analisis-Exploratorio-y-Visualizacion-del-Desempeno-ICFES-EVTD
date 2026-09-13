@@ -8,15 +8,16 @@ Proyecto que realiza el análisis exploratorio de datos (EDA) y visualización s
 
 ## 👥 Autores
 
+JAIME ROBERTO MUÑOZ LUQUE  
 - SARA CAMILA APONTE TORRES → [sara.aponte-t@mail.escuelaing.edu.co](mailto:sara.aponte-t@mail.escuelaing.edu.co)  
 - JUAN ESTEBAN ROA BENITO → [juan.roa-b@mail.escuelaing.edu.co](mailto:juan.roa-b@mail.escuelaing.edu.co)  
 - [JUAN SEBASTIÁN GUAYAZÁN CLAVIJO](https://github.com/JuanGuayazanC) → [juan.guayazan-c@mail.escuelaing.edu.co](mailto:juan.guayazan-c@mail.escuelaing.edu.co)  
 
-Aprendizaje estadístico 2 (MATE APE2-1 LEC (1682))      
-Coordinación Ingeniería Estadística     
-Ingeniería Estadística     
-Escuela Colombiana de Ingeniería Julio Garavito     
-2025-2 
+Aprendizaje estadístico 2 (MATE APE2-1 LEC (1682))  
+Coordinación Ingeniería Estadística  
+Ingeniería Estadística  
+Escuela Colombiana de Ingeniería Julio Garavito  
+2025-2  
 
 ---
 
